@@ -1,0 +1,40 @@
+<%@page import="board.User"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<!DOCTYPE html>
+<%@page import="board.BoardPost"%>
+<%
+	BoardPost boardPost = (BoardPost) request.getAttribute("boardPost");
+%>
+<jsp:include page="viewHeader.jsp"></jsp:include>
+<html>
+<style>
+	
+</style>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+	<table border="1">
+		<tr bgcolor="gray">
+			<th>ID</th>
+			<th>제목</th>
+			<th>내용</th>
+			<th>작성자 ID</th>
+			<th>작성자 아이디</th>
+			<th>작성자 이름</th>
+			<th>작성일</th>
+		</tr>
+		<tr>
+			<td>${boardPost.getId()}</td>
+			<td>${boardPost.getSubject()}</td>
+			<td>${boardPost.getContent()}</td>
+			<td>${boardPost.getCreator().getId()}</td>
+			<td>${boardPost.getCreator().getName()}</td>
+			<td>${boardPost.getCreator().getFullName()}</td>
+			<td>${boardPost.getCreateDate()}</td>
+		</tr>
+	</table>
+</body>
+</html>

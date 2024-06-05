@@ -1,0 +1,66 @@
+- <jsp:forward> 와 redirection 은 페이지를 바꾸는데 사용되는 방법입니다. 
+차이점이 무엇인지 기술하십시요. 또한 화면을 redirection 시키는 방법을 아는대로 기술하십시요. -
+
+forward 방식은 웹 컨테이너 차원의 페이지 이동입니다. 웹 브라우저는 다른 페이지로 이동했음을
+알 수 없고, 브라우저에 최초 호출한 URL이 표시됩니다.
+
+redirection 방식은 다른 웹 컨테이너에 있는 주소로 이동이 가능합니다. 웹 브라우저는 URL을
+지시된 주소로 바꾸고 그 주소로 이동하게 됩니다.
+
+서버에서 redirection 시키는 방법 
+response.sendRedirect("주소")
+
+클라이언트에서 redirection 시키는 방법
+<script>
+    window.location.replace("주소");
+    // 또는
+    window.location.href = "주소";
+</script>
+
+----------------------------------------------------------------------
+- <jsp:include> 와 <%@ include %> 는 다른 JSP 를 현재 페이지의 특정 부분으로 끌어와
+합치는데 사용되는 방법입니다. 어떤 차이점이 있는지 기술하십시요. -
+
+둘은 컴파일 시점이 다릅니다. <jsp:include>는 다른 JSP로 흐름을 이동시켜 그 결과물을 현재
+위치에 포함시키는 방식입니다. 컴파일한 include 파일을 현재 jsp 페이지로 포함하는 개념인 반면
+<%@ include %>는 다른 파일의 내용을 현재 위치에 삽입한 후 같이 컴파일하는 방식입니다.
+
+----------------------------------------------------------------------
+- EL 표현식은 어떤 용도로 사용되는지 찾아보고, request 나 session 의 attribute,
+request 의 parameter 값을 어떻게 출력할 수 있는지 간단한 예를 들어 설명하십시요. -
+
+EL 표현식은 JSP페이지에서 데이터를 출력하고 폼 데이터를 처리하는데 사용됩니다.
+
+${속성명} 형식을 사용하여 request나 session의 attribute를 출력할 수 있습니다.
+ex)
+    <p><% request.setAttribute("name", "John Doe"); %></p>
+    <p><% session.setAttribute("age", 30); %></p>
+
+    <p>Name: ${requestScope.name}</p>
+    <p>Age: ${sessionScope.age}</p>
+    
+${param.파라미터명} 형식을 사용하여 request의 parameter 값을 출력할 수 있습니다.
+ex)
+    <p>Username: ${param.username}</p>
+    <p>Password: ${param.password}</p>
+        
+----------------------------------------------------------------------
+- Standard Tag Library 의 종류를 간략히 설명하고, <c:out> 은 어떻게 사용되는지
+예를 들어 설명하십시요. - 
+
+JSTL Core 태그 : JSTL에서 가장 많이 쓰입니다. Core 때문에 JSTL을 사용한다고 봐도 무방합니다.
+<c:set/>, <c:remove/>, <c:out/>, <c:catch/>, <c:if/>, <c:choose/>, <c:when/>
+<c:otherwise/>, <c:forEach/>, <c:forTokens/>, <c:url/>, <c:param/>
+
+JSTL Formatting 태그 : JSTL Formatting 태그는 데이터의 포멧형태등을 정해주고 변경할 때
+사용하는 태그입니다.
+<fmt: setLocale/>, <fmt: requestEncoding/>, <fmt: bundle/>, <fmt: message/>
+
+<c:out> 사용법
+<c:out value="출력값" escapeXml="true나 false" default="출력값"/>
+필수적으로 value 속성을 입력해줍니다. value 속성은 화면에 출력할 값을 적어줍니다.
+escapeXml 속성은 설정해주지 않으면 기본적으로 true값으로 설정됩니다. 
+default 속성은 value 값을 찾지 못했을 때 출력하는 값입니다. 
+
+
+

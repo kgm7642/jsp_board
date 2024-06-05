@@ -1,0 +1,167 @@
+package board;
+
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class BoardServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+//	MariaBoardService boardService = new MariaBoardService();
+//	MariaUserService userService = new MariaUserService();
+	
+	// Class 객체 찾기
+	private Class<BoardController> boardController = BoardController.class;
+	// Method 찾기
+	private Method method;
+	
+    public BoardServlet() {
+        super();
+    }
+    
+	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		String requestURI = req.getRequestURI();
+		String contextPath = req.getContextPath();
+		String forwardUrl = requestURI.substring(contextPath.length()+"/BoardServlet".length());
+		
+		// 리플렉션 메소드 생성시 2개의 인자값을 받기 위해 크기가 2인 배열 생성
+		Class partypes[] = new Class[2];
+		// 배열에 값을 추가함
+		partypes[0] = HttpServletRequest.class;
+		partypes[1] = HttpServletResponse.class;
+		// 리플렉션 메소드를 실행할 때 req, res 인자값 2개를 넘겨주기 위해 크기가 2인 배열 생성 
+		Object[] arguments = {req, res};
+		
+//		if(forwardUrl=="") {
+//			forwardUrl = "viewLogin";
+//		}
+		
+		System.out.println("세션 :" + req.getSession().getAttribute("user"));
+		
+		try {
+			if(req.getSession().getAttribute("user")==null) {
+				if(forwardUrl.equals("/login")) {
+//					boardController.login(req, res); ←[리플렉션 전] ↓[리플렉션 후]
+					method = boardController.getDeclaredMethod("login", partypes);
+//					Method 객체의 invoke() 함수 실행
+					method.invoke(new BoardController(), req, res);
+				} else {
+					method = boardController.getDeclaredMethod("viewLogin", partypes);
+//					RequestDispatcher rd = req.getRequestDispatcher(boardController.viewBoardPost(req, res)); ←[리플렉션 전] ↓[리플렉션 후]
+//																			Method 객체의 invoke() 함수 실행
+					RequestDispatcher rd = req.getRequestDispatcher((String) method.invoke(new BoardController(), arguments));
+					System.out.println("로그인 뷰 이동 확인");
+					rd.forward(req, res);
+				}
+			} else {
+				if(forwardUrl.equals("/createBoardPost")) {
+//					boardController.createBoardPost(req, res); ←[리플렉션 전] ↓[리플렉션 후]
+//					Method 객체의 invoke() 함수 실행
+					method = boardController.getDeclaredMethod("createBoardPost", partypes);
+					method.invoke(new BoardController(), arguments);
+				} else if(forwardUrl.equals("/viewBoardPost")) {
+//					RequestDispatcher rd = req.getRequestDispatcher(boardController.viewBoardPost(req, res)); ←[리플렉션 전] ↓[리플렉션 후]
+//					Method 객체의 invoke() 함수 실행
+					method = boardController.getDeclaredMethod("viewBoardPost", partypes);
+					RequestDispatcher rd = req.getRequestDispatcher((String) method.invoke(new BoardController(), arguments));
+					rd.forward(req, res);
+				} else if(forwardUrl.equals("/viewBoardPosts")) {
+//					RequestDispatcher rd = req.getRequestDispatcher(boardController.viewBoardPosts(req, res)); ←[리플렉션 전] ↓[리플렉션 후]
+//					Method 객체의 invoke() 함수 실행
+					method = boardController.getDeclaredMethod("viewBoardPosts", partypes);
+					RequestDispatcher rd = req.getRequestDispatcher((String) method.invoke(new BoardController(), arguments));
+					rd.forward(req, res);
+				} else if(forwardUrl.equals("/viewCreateBoardPost")) {
+//					RequestDispatcher rd = req.getRequestDispatcher(boardController.viewCreateBoardPost(req, res)); ←[리플렉션 전] ↓[리플렉션 후]
+//					Method 객체의 invoke() 함수 실행
+					method = boardController.getDeclaredMethod("viewCreateBoardPost", partypes);
+					RequestDispatcher rd = req.getRequestDispatcher((String) method.invoke(new BoardController(), arguments));
+					rd.forward(req, res);
+				}
+			}
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+		
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		doGet(req, res);
+	}
+	
+//	// 게시글 생성하기 Action
+//	private String createBoardPost(HttpServletRequest req, HttpServletResponse res) {
+//		User user = (User)req.getSession().getAttribute("user");
+//		BoardPost boardPost = new BoardPost(
+//				req.getParameter("subject"), req.getParameter("content"), user
+//				);
+//		boardService.createBoardPost(
+//				new BoardPost(req.getParameter("subject"), req.getParameter("content"), user)
+//				);
+//		return null;
+//	}
+//	// 로그인 Action
+//	private String login(HttpServletRequest req, HttpServletResponse res) throws IOException {
+//		User user = new User(req.getParameter("name"), req.getParameter("password"));
+//		userService.login(user);
+//		if(user==null) {
+//			res.sendRedirect("/124003/BoardServlet/viewLogin");
+//		} else {
+//			req.getSession().setAttribute("user", user);
+//			res.sendRedirect("/124003/BoardServlet/viewBoardPosts");
+//		}
+////		return "/WEB-INF/board/login.jsp";
+//		return null;
+//	}
+//	
+//	// 게시글 상세보기 Action
+//	private String viewBoardPost(HttpServletRequest req, HttpServletResponse res) {
+//		req.setAttribute("boardPost", boardService.getViewBoardPost(Long.parseLong(req.getParameter("id"))));
+//		return "/WEB-INF/board/viewBoardPost.jsp";
+//	}
+//	
+//	// 게시글 목록보기 Action
+//	private String viewBoardPosts(HttpServletRequest req, HttpServletResponse res) {	
+//		List<BoardPost> boardPosts = new ArrayList<BoardPost>();
+//		String keyWord = req.getParameter("subject");
+//		if(keyWord == null) {
+//			boardPosts = boardService.getViewBoardPosts();
+//		} else {
+//			boardPosts = boardService.getViewBoardPostsWithKey(keyWord);
+//		}
+//		req.setAttribute("boardPosts", boardPosts);
+//		return "/WEB-INF/board/viewBoardPosts.jsp";
+//	}
+//	
+//	private String viewCreateBoardPost(HttpServletRequest req, HttpServletResponse res) {
+//		return "/WEB-INF/board/viewCreateBoardPost.jsp";
+//	}
+//	
+//	private String viewLogin(HttpServletRequest req, HttpServletResponse res) {
+//		return "/WEB-INF/board/viewLogin.jsp";
+//	}
+	
+	private Connection getConnection() {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		
+	    //mariaDB 연결
+	    try {
+	    	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/test","root","1234");	
+	    } catch(Exception e) {
+	    	e.printStackTrace();
+	    }
+	    return conn;
+	}
+}

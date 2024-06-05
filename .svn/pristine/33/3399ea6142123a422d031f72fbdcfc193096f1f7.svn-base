@@ -1,0 +1,6 @@
+- multiplication.jsp 가 변환된 Servlet 소스파일을 Tomcat 의 work 디렉토리
+하위에서 찾은 후, JSP의 page 지시자나 여러분들의 작성한 HTML 들이 어떤 Java 소스로
+변환되었는지 분석하고 그 내용을 간락히 적으십시요. -
+
+JSP의 page 지시자는 모두 사라지고 자바코드로 변환되었습니다.
+HTML 코드들은 out.write(""); 또는 out.print(""); 형태로 모두 변환되었습니다.

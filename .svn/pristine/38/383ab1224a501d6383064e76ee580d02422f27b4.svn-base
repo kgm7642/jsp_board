@@ -1,0 +1,7 @@
+service.userService=board.MariaUserService
+service.boardService=board.MariaBoardService
+
+database.driver=org.mariadb.jdbc.Driver
+database.url=jdbc:mariadb://127.0.0.1:3306/test
+database.user=root
+database.password=1234

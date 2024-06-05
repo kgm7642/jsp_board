@@ -1,0 +1,69 @@
+package BoardPost;
+
+import java.sql.Timestamp;
+
+public class User {
+	private long id;
+	private String name;
+	private String fullName;
+	private String password;
+	private String email;
+	private int age;
+	private Timestamp createDate;	
+		
+	public User() {
+		super();
+	}
+	public User(long id, String name, String fullName, String password, String email, int age, Timestamp createDate) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.fullName = fullName;
+		this.password = password;
+		this.email = email;
+		this.age = age;
+		this.createDate = createDate;
+	}
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getFullName() {
+		return fullName;
+	}
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public Timestamp getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(Timestamp createDate) {
+		this.createDate = createDate;
+	}
+}

@@ -1,0 +1,14 @@
+- Java의 InputStream, OutputStream, Reader, Writer 가 무엇인 공부하고
+간략히 기술하시기 바랍니다. -
+
+자바에서 데이터는 Stream을 통해 입출력됩니다. 프로그램이 출발지/도착지인지에 따라 스트림의 종류가
+결정됩니다. 데이터를 입력 받을 때는 InputStream, 데이터를 출력 할 때는 OutputStream울
+사용합니다. InputStream이란 바이트 기반 입력 스트림의 최상위 클래스로 추상클래스입니다.
+모든 바이트 기반 입력 스트림은 이 클래스를 상속받아서 만들어집니다. 반대로 OutputStream이란
+바이트 기반 출력 스트림의 최상위 클래스로 추상클래스입니다. 모든 바이트 기반 출력 스트림 클래스는
+이 클래스를 상속받아서 만들어집니다.
+Reader란 문자 기반 입력 스트림의 최상위 추상 클래스입니다. 모든 문자 기반 입력 클래스는 Reader
+클래스를 상속받아 만들어지며 FileReader, BufferedReader, InputStreamReader 클래스가
+있습니다. Writer란 문자 기반 출력 스트림의 최상위 추상 클래스입니다. 모든 문자 기반 출력 클래스는
+Writer클래스를 상속받아 만들어지며 FileWriter, BufferedWriter, PrintWriter,
+OutputStreamWriter 클래스가 있습니다.

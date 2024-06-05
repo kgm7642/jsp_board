@@ -1,0 +1,132 @@
+package board;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class BoardServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	MariaBoardService boardService = new MariaBoardService();
+	MariaUserService userService = new MariaUserService();
+    public BoardServlet() {
+        super();
+    }
+    
+	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		String requestURI = req.getRequestURI();
+		String contextPath = req.getContextPath();
+		String forwardUrl = requestURI.substring(contextPath.length()+"/BoardServlet".length());
+
+		if(forwardUrl=="") {
+			forwardUrl = "viewLogin";
+		}
+		System.out.println("세션 :" + req.getSession().getAttribute("user"));
+		
+		if(req.getSession().getAttribute("user")==null) {
+			if(forwardUrl.equals("/login")) {
+				login(req, res);
+			} else {
+				RequestDispatcher rd = req.getRequestDispatcher(viewLogin(req, res));
+				System.out.println("로그인 뷰 이동 확인");
+				rd.forward(req, res);
+			}
+		} else {			
+			if(forwardUrl.equals("/createBoardPost")) {
+				res.sendRedirect("/124003/BoardServlet/viewBoardPosts");
+				createBoardPost(req, res);
+			} else if(forwardUrl.equals("/viewBoardPost")) {
+				RequestDispatcher rd = req.getRequestDispatcher(viewBoardPost(req, res));
+				rd.forward(req, res);
+			} else if(forwardUrl.equals("/viewBoardPosts")) {
+				RequestDispatcher rd = req.getRequestDispatcher(viewBoardPosts(req, res));
+				rd.forward(req, res);
+			} else if(forwardUrl.equals("/viewCreateBoardPost")) {
+				RequestDispatcher rd = req.getRequestDispatcher(viewCreateBoardPost(req, res));
+				rd.forward(req, res);
+			}		
+		}
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		doGet(req, res);
+	}
+	
+	// 게시글 생성하기 Action
+	private String createBoardPost(HttpServletRequest req, HttpServletResponse res) {
+		User user = (User)req.getSession().getAttribute("user");
+		BoardPost boardPost = new BoardPost(
+				req.getParameter("subject"), req.getParameter("content"), user
+				);
+		boardService.createBoardPost(
+				new BoardPost(req.getParameter("subject"), req.getParameter("content"), user)
+				);
+		return null;
+	}
+	// 로그인 Action
+	private String login(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		User user = new User(req.getParameter("name"), req.getParameter("password"));
+		userService.login(user);
+		if(user==null) {
+			res.sendRedirect("/124003/BoardServlet/viewLogin");
+		} else {
+			req.getSession().setAttribute("user", user);
+			res.sendRedirect("/124003/BoardServlet/viewBoardPosts");
+		}
+//		return "/WEB-INF/board/login.jsp";
+		return null;
+	}
+	
+	// 게시글 상세보기 Action
+	private String viewBoardPost(HttpServletRequest req, HttpServletResponse res) {
+		req.setAttribute("boardPost", boardService.getViewBoardPost(Long.parseLong(req.getParameter("id"))));
+		return "/WEB-INF/board/viewBoardPost.jsp";
+	}
+	
+	// 게시글 목록보기 Action
+	private String viewBoardPosts(HttpServletRequest req, HttpServletResponse res) {	
+		List<BoardPost> boardPosts = new ArrayList<BoardPost>();
+		String keyWord = req.getParameter("subject");
+		if(keyWord == null) {
+			boardPosts = boardService.getViewBoardPosts();
+		} else {
+			boardPosts = boardService.getViewBoardPostsWithKey(keyWord);
+		}
+		req.setAttribute("boardPosts", boardPosts);
+		return "/WEB-INF/board/viewBoardPosts.jsp";
+	}
+	
+	private String viewCreateBoardPost(HttpServletRequest req, HttpServletResponse res) {
+		return "/WEB-INF/board/viewCreateBoardPost.jsp";
+	}
+	
+	private String viewLogin(HttpServletRequest req, HttpServletResponse res) {
+		return "/WEB-INF/board/viewLogin.jsp";
+	}
+	
+	private Connection getConnection() {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		
+	    //mariaDB 연결
+	    try {
+	    	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/test","root","1234");	
+	    } catch(Exception e) {
+	    	e.printStackTrace();
+	    }
+	    return conn;
+	}
+}

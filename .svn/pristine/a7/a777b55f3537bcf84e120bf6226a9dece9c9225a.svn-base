@@ -1,0 +1,84 @@
+<%@page import="board.User"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<!DOCTYPE html>
+<%@ page import="java.sql.*" %>
+<%@ page import="java.util.*" %>
+<%@page import="board.BoardPost"%>
+<%
+	if(session.getAttribute("user") == null) {
+		response.sendRedirect("/124003/board/viewLogin.jsp");
+	}
+%>
+<%!
+	Connection conn = null;
+	PreparedStatement stmt = null;
+	
+	private Connection getConnection() {
+	    // 여러분의 DB 에 연결할 커넥션 객체 리턴 (구글링할것)
+	    //mariaDB 연결
+	    try {
+	    	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/test","root","1234");	
+	    } catch(Exception e) {
+	    	e.printStackTrace();
+	    }
+	    return conn;
+	}
+	
+	BoardPost getBoardPost(long id) {
+		BoardPost boardPost = new BoardPost();
+		
+		try {
+			conn = getConnection();
+			stmt = conn.prepareStatement("select a.id, a.subject, a.content, b.id AS creatorId, b.name AS creatorName, b.fullName AS creatorFullName, a.createDate from boardpost a LEFT OUTER JOIN USER b ON a.creatorId = b.id WHERE a.id = " + id);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()){
+				User user = new User();
+				boardPost.setId(rs.getLong("id"));
+				boardPost.setSubject(rs.getString("subject"));
+				boardPost.setContent(rs.getString("content"));
+				boardPost.setCreator(user);
+				boardPost.getCreator().setId(rs.getLong("creatorId"));
+				boardPost.getCreator().setName(rs.getString("creatorName"));
+				boardPost.getCreator().setFullName(rs.getString("creatorFullName"));
+				boardPost.setCreateDate(rs.getTimestamp("createDate"));
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return boardPost;
+	}
+	
+%>
+<%
+	Class.forName("org.mariadb.jdbc.Driver");
+	BoardPost boardPost = getBoardPost(Long.valueOf(request.getParameter("id")));
+%>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+	<table>
+		<tr bgcolor="gray">
+			<th>ID</th>
+			<th>제목</th>
+			<th>내용</th>
+			<th>작성자 ID</th>
+			<th>작성자 아이디</th>
+			<th>작성자 이름</th>
+			<th>작성일</th>
+		</tr>
+		<tr>
+			<td><% out.print(boardPost.getId()); %></td>
+			<td><% out.print(boardPost.getSubject()); %></td>
+			<td><% out.print(boardPost.getContent()); %></td>			
+			<td><% out.print(boardPost.getCreator().getId()); %></td>
+			<td><% out.print(boardPost.getCreator().getName()); %></td>
+			<td><% out.print(boardPost.getCreator().getFullName()); %></td>
+			<td><% out.print(boardPost.getCreateDate()); %></td>
+		</tr>
+	</table>
+</body>
+</html>

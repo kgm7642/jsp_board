@@ -1,0 +1,21 @@
+- <jsp:include>, <jsp:forward> 는 어떤 용도로 사용되며 차이점은 무엇인지 기술하십시요.
+또한, 위 2가지 태그를 Java 코드로 표현해 보십시요. -
+
+<jsp:forwrad>는 현재 페이지를 다른 페이지로 전환할 때 사용합니다.
+<jsp:include>는 JSP 페이지 내에 다른 페이지를 삽입하는 액션태그 입니다.
+
+차이점
+request 제어권에서 차이가 있습니다.
+forward는 url1에서 url2로 전달하게 되면 제어권을 다시 url1로 전달받지 못합니다.
+따라서 url1에서 처리한 결과 화면이 전혀 보이지 않고 최종 클라이언트 브라우저에는 url2에서
+처리한 화면만 보여지게 됩니다. Include는 url1에서 include를 하면 url2로 제어권을 잠시
+빌려주고 처리를 다 하면 url1로 제어권을 반납합니다. 따라서 클라이언트 화면에서는 url1의
+내용속에 url2가 들어가서 보여집니다.
+
+<jsp:include>에 대한 서블릿 코드
+RequestDispatcher dispatcher = request.getRequestDispatcher("주소");
+dispatcher.include(request, response);
+
+<jsp:forward>에 대한 서블릿 코드
+RequestDispatcher dispatcher = request.getRequestDispatcher("주소");
+dispatcher.forward(request, response);

@@ -1,0 +1,153 @@
+package board;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class BoardController {
+	
+	private UserService userService;
+	private BoardService boardService;
+	
+	public BoardController() {
+		super();
+
+		InputStream is =  ServiceManager.class.getResourceAsStream("/board.properties");
+		Properties props = new Properties();
+
+		try {
+    		// InputStream을 사용해 파일내용 로드
+    		props.load(is);
+    		// properties 에서 각각의 클래스명을 가져온다.
+    		String userServiceName = props.getProperty("service.userService");
+    		String boardServiceName = props.getProperty("service.boardService");
+    		// 가져온 클래스명을 사용해 인스턴스를 생성한다.
+    		this.userService = (UserService) Class.forName(userServiceName).getDeclaredConstructor().newInstance();
+    		this.boardService = (BoardService) Class.forName(boardServiceName).getDeclaredConstructor().newInstance();			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
+	
+	// 게시글 생성하기 Action
+	public String createBoardPost(HttpServletRequest req, HttpServletResponse res) {
+		Board board = (Board)req.getAttribute("board");
+		System.out.println("--board-- : " + board.getId());
+		try {
+			req.setCharacterEncoding("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		User user = (User)req.getSession().getAttribute("user");
+		System.out.println("======user.getId()========"+board.getId());
+		boardService.createBoardPost(new BoardPost(board, req.getParameter("subject"), req.getParameter("content"), user));
+		try {
+			System.out.println("컨트롤러 출력 board.getId() : " + board.getId());
+			res.sendRedirect("/124003/BoardServlet/viewBoardPosts?boardId="+board.getId());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	// 로그인 Action
+	public String login(HttpServletRequest req, HttpServletResponse res) {
+		User user = new User(req.getParameter("name"), req.getParameter("password"));
+		userService.getUser(user);
+		try {
+			if(user==null) {
+				// 로그인 실패
+				res.sendRedirect("/124003/BoardServlet/viewLogin");
+			} else {
+				// 로그인 성공
+				req.getSession().setAttribute("user", user);
+				res.sendRedirect("/124003/BoardServlet/viewBoardPosts");
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	// 게시글 상세보기 Action
+	public String viewBoardPost(HttpServletRequest req, HttpServletResponse res) {
+		viewHeader(req, res);
+		req.setAttribute("boardPost", boardService.getViewBoardPost(Long.parseLong(req.getParameter("id"))));
+		return "/WEB-INF/board/viewBoardPost.jsp";
+	}
+	
+	// 게시글 목록보기 Action
+//	public String viewBoardPosts(HttpServletRequest req, HttpServletResponse res) {	
+//		List<BoardPost> boardPosts = new ArrayList<BoardPost>();
+//		String keyWord = req.getParameter("subject");
+//		if(keyWord == null) {
+//			boardPosts = boardService.getViewBoardPosts();
+//		} else {
+//			boardPosts = boardService.getViewBoardPostsWithKey(keyWord);
+//		}
+//		req.setAttribute("boardPosts", boardPosts);
+//		return "/WEB-INF/board/viewBoardPosts.jsp";
+//	}
+	
+	// 게시글 목록보기 Action V2
+	public String viewBoardPosts(HttpServletRequest req, HttpServletResponse res) {
+		viewHeader(req, res);
+		System.out.println("목록보기 확인용");
+		Board board = (Board) req.getAttribute("board");
+		
+		System.out.println("board.getId() : " + board.getId());
+		
+		String subject = req.getParameter("subject");
+		List<BoardPost> boardPosts = new ArrayList<BoardPost>();
+		Map<String, Object> conditionMap = new HashMap<String, Object>();
+		conditionMap.put("subject", subject);
+		if(subject == null) {
+			System.out.println("게시글 목록보기 컨트롤러 null");
+			boardPosts = boardService.getViewBoardPostsV2(board);
+		} else {
+			System.out.println("게시글 목록보기 컨트롤러 null x");
+			boardPosts = boardService.getViewBoardPostsWithKeyV2(board, conditionMap);
+		}
+		req.setAttribute("boardPosts", boardPosts);
+		return "/WEB-INF/board/viewBoardPosts.jsp";
+	}
+	
+	// 게시글 작성하기 View 이동
+	public String viewCreateBoardPost(HttpServletRequest req, HttpServletResponse res) {
+		viewHeader(req, res);
+		return "/WEB-INF/board/viewCreateBoardPost.jsp";
+	}
+	
+	// 로그인 View 이동
+	public String viewLogin(HttpServletRequest req, HttpServletResponse res) {
+		return "/WEB-INF/board/viewLogin.jsp";
+	}
+	
+	// 게시판 정보 조회
+	public Board getBoard(HttpServletRequest req, HttpServletResponse res) {
+		if(req.getParameter("boardId") != null) {
+			return boardService.getBoard(Long.parseLong(req.getParameter("boardId")));
+		} else if(req.getParameter("boardName") != null) {
+			return boardService.getBoardByName(req.getParameter("boardName"));
+		} else {
+			return boardService.getBoard(2);
+		}
+	}
+	
+	// 헤더
+	public String viewHeader(HttpServletRequest req, HttpServletResponse res) {
+		Board board = (Board) req.getAttribute("board");
+		req.setAttribute("boardList", boardService.getAllBoards());
+		req.setAttribute("board", board);
+		return null;
+	}
+}

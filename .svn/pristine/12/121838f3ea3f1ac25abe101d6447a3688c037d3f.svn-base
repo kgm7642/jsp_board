@@ -1,0 +1,44 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>게시글 등록</title>
+</head>
+<body>
+	<a href="/board/viewBoardPost.jsp">게시물 목록</a>
+
+	<form name="mainForm" method="post" action="/board/board/createBoardPost.jsp">
+	
+		<input type="text" name="subject">
+		<input type="text" name="content">
+		<input type="text" name="creatorFullName">
+		
+		<input type="button" onclick="createBoardPost();">
+	</form>
+	
+</body>
+<script>
+	
+	let subject = document.getElementsByName("subject")[0]
+	let content = document.getElementsByName("content")[0]
+	let creatorFullName = document.getElementsByName("creatorFullName")[0]
+	let mainForm = document.getElementsByName("mainForm")[0]
+
+	function createBoardPost() {
+		if(!subject.value) {
+			alert("제목을 입력하세요.");
+			return false;
+		} else if(!content.value) {
+			alert("내용을 입력하세요.")
+			return false;
+		} else if(!creatorFullName.value) {
+			alert("작성자명을 입력하세요.")
+			return false;
+		}
+		
+		document.mainForm.submit();
+	}
+</script>
+</html>

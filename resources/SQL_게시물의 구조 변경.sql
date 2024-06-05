@@ -1,0 +1,1 @@
+UPDATE boardpost SET boardId=[boardId];

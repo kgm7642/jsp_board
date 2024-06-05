@@ -1,0 +1,9 @@
+CREATE TABLE `board` (
+	`id` BIGINT NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(50)  NOT NULL DEFAULT NULL,
+	`title` VARCHAR(50)  NOT NULL DEFAULT NULL,
+	`commentEnabled` INT  NOT NULL,
+	`createDate` DATE  NOT NULL,
+	PRIMARY KEY (`id`)
+)
+;

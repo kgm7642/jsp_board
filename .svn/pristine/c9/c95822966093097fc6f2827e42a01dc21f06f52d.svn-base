@@ -1,0 +1,205 @@
+package board;
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Test;
+
+public class MariaDBBoardServiceTest {
+
+	BoardService boardService = new MariaBoardService();
+	
+	// 게시글 상세보기 service 테스트
+	@Test
+	public void testGetViewBoardPost() {
+		long id = 10;
+		BoardPost boardPost = boardService.getViewBoardPost(id);
+		
+		System.out.println(">> boardPost.getId()=" + boardPost.getId());
+		System.out.println(">> boardPost.getSubject()=" + boardPost.getSubject());
+		System.out.println(">> boardPost.getContent()=" + boardPost.getContent());
+		System.out.println(">> boardPost.getCreator().getId())=" + boardPost.getCreator().getId());
+		System.out.println(">> boardPost.getCreator().getName())=" + boardPost.getCreator().getName());
+		System.out.println(">> boardPost.getCreator().getFullName())=" + boardPost.getCreator().getFullName());
+		System.out.println(">> boardPost.getCreateDate())=" + boardPost.getCreateDate());
+	}
+
+	// 게시글 목록보기(검색x) service 테스트
+	@Test
+	public void testGetViewBoardPosts() {
+		List<BoardPost> boardPosts = boardService.getViewBoardPosts();
+		
+		System.out.println("boardPosts.size() : " + boardPosts.size());
+		for(BoardPost boardPost : boardPosts) {
+			System.out.println(">> boardPost.getId()=" + boardPost.getId());
+			System.out.println(">> boardPost.getSubject()=" + boardPost.getSubject());
+			System.out.println(">> boardPost.getContent()=" + boardPost.getContent());
+			System.out.println(">> boardPost.getCreator().getId())=" + boardPost.getCreator().getId());
+			System.out.println(">> boardPost.getCreator().getName())=" + boardPost.getCreator().getName());
+			System.out.println(">> boardPost.getCreator().getFullName())=" + boardPost.getCreator().getFullName());
+			System.out.println(">> boardPost.getCreateDate())=" + boardPost.getCreateDate());
+			System.out.println("--------------------------------------------------------------");
+		}
+	}
+
+	// 게시글 목록보기(검색o) service 테스트
+	@Test
+	public void testGetViewBoardPostsWithKey() {
+		String keyWord = "테스트";
+		List<BoardPost> boardPosts = boardService.getViewBoardPostsWithKey(keyWord);
+		
+		System.out.println("boardPosts.size() : " + boardPosts.size());
+		for(BoardPost boardPost : boardPosts) {
+			System.out.println(">> boardPost.getId()=" + boardPost.getId());
+			System.out.println(">> boardPost.getSubject()=" + boardPost.getSubject());
+			System.out.println(">> boardPost.getContent()=" + boardPost.getContent());
+			System.out.println(">> boardPost.getCreator().getId())=" + boardPost.getCreator().getId());
+			System.out.println(">> boardPost.getCreator().getName())=" + boardPost.getCreator().getName());
+			System.out.println(">> boardPost.getCreator().getFullName())=" + boardPost.getCreator().getFullName());
+			System.out.println(">> boardPost.getCreateDate())=" + boardPost.getCreateDate());
+			System.out.println("--------------------------------------------------------------");
+		}
+	}
+
+	// 게시글 등록하기 service 테스트
+	@Test
+	public void testCreateBoardPost() {
+		String subject = "게시글 생성하기 테스트 제목";
+		String content = "게시글 생성하기 테스트 내용";
+		long id = 6;
+		BoardPost boardPost = new BoardPost();
+		User user = new User();
+		boardPost.setSubject(subject);
+		boardPost.setContent(content);
+		boardPost.setCreator(user);
+		boardPost.getCreator().setId(id);
+		
+		boardPost = boardService.createBoardPost(boardPost);
+		System.out.println(">> boardPost.getId()=" + boardPost.getId());
+		System.out.println(">> boardPost.getSubject()=" + boardPost.getSubject());
+		System.out.println(">> boardPost.getContent()=" + boardPost.getContent());
+		System.out.println(">> boardPost.getCreator().getId())=" + boardPost.getCreator().getId());
+		System.out.println(">> boardPost.getCreateDate())=" + boardPost.getCreateDate());
+	}
+	
+	// 게시글 등록하기 V2
+	@Test
+	public void testCreateBoardPostV2() {
+		String subject = "게시글 생성하기 테스트 제목";
+		String content = "게시글 생성하기 테스트 내용";
+		long id = 6;
+		
+		
+		BoardPost boardPost = new BoardPost();
+		Board board = new Board();
+		User user = new User();
+		
+		board.setId(2);
+		
+		boardPost.setBoard(board);
+		boardPost.setSubject(subject);
+		boardPost.setContent(content);
+		boardPost.setCreator(user);
+		boardPost.getCreator().setId(id);
+		
+		boardPost = boardService.createBoardPost(board, boardPost);
+		System.out.println(">> boardPost.getId()=" + boardPost.getId());
+		System.out.println(">> boardPost.getBoard().getId()=" + boardPost.getBoard().getId());
+		System.out.println(">> boardPost.getSubject()=" + boardPost.getSubject());
+		System.out.println(">> boardPost.getContent()=" + boardPost.getContent());
+		System.out.println(">> boardPost.getCreator().getId())=" + boardPost.getCreator().getId());
+		System.out.println(">> boardPost.getCreateDate())=" + boardPost.getCreateDate());
+	}
+
+	// 게시글 목록보기(검색x) service 테스트 V2
+	@Test
+	public void testGetViewBoardPostsV2() {
+		Board board = new Board();
+		board.setId(2);
+		List<BoardPost> boardPosts = boardService.getViewBoardPostsV2(board);
+		
+		System.out.println("boardPosts.size() : " + boardPosts.size());
+		for(BoardPost boardPost : boardPosts) {
+			System.out.println(">> boardPost.getId()=" + boardPost.getId());
+			System.out.println(">> boardPost.getBoard().getId()=" + boardPost.getBoard().getId());
+			System.out.println(">> boardPost.getSubject()=" + boardPost.getSubject());
+			System.out.println(">> boardPost.getContent()=" + boardPost.getContent());
+			System.out.println(">> boardPost.getCreator().getId())=" + boardPost.getCreator().getId());
+			System.out.println(">> boardPost.getCreator().getName())=" + boardPost.getCreator().getName());
+			System.out.println(">> boardPost.getCreator().getFullName())=" + boardPost.getCreator().getFullName());
+			System.out.println(">> boardPost.getCreateDate())=" + boardPost.getCreateDate());
+			System.out.println("--------------------------------------------------------------");
+		}
+	}
+
+	// 게시글 목록보기(검색o) service 테스트 V2
+	@Test
+	public void testGetViewBoardPostsWithKeyV2() {
+		Board board = new Board();
+		board.setId(2);
+		Map<String, Object> conditionMap = new HashMap<String, Object>();
+		conditionMap.put("subject", "테스트");
+		
+		List<BoardPost> boardPosts = boardService.getViewBoardPostsWithKeyV2(board, conditionMap);
+		
+		System.out.println("boardPosts.size() : " + boardPosts.size());
+		for(BoardPost boardPost : boardPosts) {
+			System.out.println(">> boardPost.getId()=" + boardPost.getId());
+			System.out.println(">> boardPost.getBoard().getId()=" + boardPost.getBoard().getId());
+			System.out.println(">> boardPost.getSubject()=" + boardPost.getSubject());
+			System.out.println(">> boardPost.getContent()=" + boardPost.getContent());
+			System.out.println(">> boardPost.getCreator().getId())=" + boardPost.getCreator().getId());
+			System.out.println(">> boardPost.getCreator().getName())=" + boardPost.getCreator().getName());
+			System.out.println(">> boardPost.getCreator().getFullName())=" + boardPost.getCreator().getFullName());
+			System.out.println(">> boardPost.getCreateDate())=" + boardPost.getCreateDate());
+			System.out.println("--------------------------------------------------------------");
+		}
+	}
+	
+	// id에 맞는 게시판 정보 조회
+	@Test
+	public void getBoardTest() {
+		long id = 1;
+		Board board = boardService.getBoard(id);
+		
+		System.out.println(">> board.getId()=" + board.getId());
+		System.out.println(">> board.getName()=" + board.getName());
+		System.out.println(">> board.getTitle()=" + board.getTitle());
+		System.out.println(">> board.getSubject()=" + board.isCommentEnabled());
+		System.out.println(">> board.getCreateDate()=" + board.getCreateDate());		
+	}
+	
+	// name에 맞는 게시판 정보 조회
+	@Test
+	public void getBoardByNameTest() {
+		String name = "free";
+		Board board = boardService.getBoardByName(name);
+		
+		System.out.println(">> board.getId()=" + board.getId());
+		System.out.println(">> board.getName()=" + board.getName());
+		System.out.println(">> board.getTitle()=" + board.getTitle());
+		System.out.println(">> board.getSubject()=" + board.isCommentEnabled());
+		System.out.println(">> board.getCreateDate()=" + board.getCreateDate());		
+	}
+
+	// 모든 게시판 정보 조회
+	@Test
+	public void getAllBoardsTest() {
+		List<Board> boards = new ArrayList<Board>();
+		boards = boardService.getAllBoards();	
+		
+		System.out.println("boardPosts.size() : " + boards.size());
+		for(Board board : boards) {
+			System.out.println(">> board.getId()=" + board.getId());
+			System.out.println(">> board.getName()=" + board.getName());
+			System.out.println(">> board.getTitle()=" + board.getTitle());
+			System.out.println(">> board.getSubject()=" + board.isCommentEnabled());
+			System.out.println(">> board.getCreateDate()=" + board.getCreateDate());
+			System.out.println("--------------------------------------------------------------");
+		}
+	}
+}

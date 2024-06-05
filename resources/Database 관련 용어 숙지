@@ -1,0 +1,12 @@
+- DBMS, SQL, DDL, DML 이 어떤 의미의 약어인지 정리하여 제출하십시요. -
+
+DBMS(Database Management System, 데이터베이스 관리 시스템)
+데이터베이스를 운영하고 관리하는 소프트웨어.
+SQL(Structured Query Language)
+구조화된 질의 언어라는 뜻으로 관계형 데이터베이스에서 사용되는 언어.
+DDL(Data Definition Language)
+데이터베이스를 정의하는 언어를 말하며 데이터를 생성하거나 수정, 삭제 등 데이터의 전체
+골격을 결정하는 역할을 함.
+DML(Data Manipulation Language)
+정의된 데이터베이스에 입력된 레코드를 조회하거나 수정하거나 삭제하는 등의 역할을 함.
+한마디로 테이블에 있는 행과 열을 조작하는 언어.

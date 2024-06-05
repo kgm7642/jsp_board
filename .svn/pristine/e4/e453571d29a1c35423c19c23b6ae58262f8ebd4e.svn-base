@@ -1,0 +1,12 @@
+package board;
+
+import java.util.List;
+
+public interface BoardService {
+
+	BoardPost getViewBoardPost(Long id);
+	List<BoardPost> getViewBoardPosts();
+	List<BoardPost> getViewBoardPostsWithKey(String keyWord);
+	BoardPost createBoardPost(BoardPost boardPost);
+	
+}

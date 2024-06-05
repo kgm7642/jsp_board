@@ -1,0 +1,93 @@
+package board;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class BoardServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    public BoardServlet() {
+        super();
+    }
+    
+	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		String requestURI = req.getRequestURI();
+		String contextPath = req.getContextPath();
+		String forwardUrl = requestURI.substring(contextPath.length()+"/BoardServlet".length());
+
+		if(forwardUrl=="") {
+			forwardUrl = "viewLogin";
+		}
+		System.out.println("세션 :" + req.getSession().getAttribute("user"));
+		
+		if(req.getSession().getAttribute("user")==null) {
+			if(forwardUrl.equals("/login")) {
+				RequestDispatcher rd = req.getRequestDispatcher(login(req, res));
+				rd.forward(req, res);
+			} else {
+				RequestDispatcher rd = req.getRequestDispatcher(viewLogin(req, res));
+				System.out.println("로그인 뷰 이동 확인");
+				rd.forward(req, res);
+			}
+		} else {			
+			if(forwardUrl.equals("/createBoardPost")) {
+				RequestDispatcher rd = req.getRequestDispatcher(createBoardPost(req, res));
+				rd.forward(req, res);
+			} else if(forwardUrl.equals("/viewBoardPost")) {
+				RequestDispatcher rd = req.getRequestDispatcher(viewBoardPost(req, res));
+				rd.forward(req, res);
+			} else if(forwardUrl.equals("/viewBoardPosts")) {
+				RequestDispatcher rd = req.getRequestDispatcher(viewBoardPosts(req, res));
+				rd.forward(req, res);
+			} else if(forwardUrl.equals("/viewCreateBoardPost")) {
+				RequestDispatcher rd = req.getRequestDispatcher(viewCreateBoardPost(req, res));
+				rd.forward(req, res);
+			}		
+		}
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+	
+	private String createBoardPost(HttpServletRequest request, HttpServletResponse response) {
+		return "/WEB-INF/board/createBoardPost.jsp";
+	}
+
+	private String login(HttpServletRequest request, HttpServletResponse response) {
+		return "/WEB-INF/board/login.jsp";
+	}
+	
+	private String viewBoardPost(HttpServletRequest request, HttpServletResponse response) {
+		return "/WEB-INF/board/viewBoardPost.jsp";
+	}
+	
+	private String viewBoardPosts(HttpServletRequest request, HttpServletResponse response) {
+		return "/WEB-INF/board/viewBoardPosts.jsp";
+	}
+	
+	private String viewCreateBoardPost(HttpServletRequest request, HttpServletResponse response) {
+		return "/WEB-INF/board/viewCreateBoardPost.jsp";
+	}
+	
+	private String viewLogin(HttpServletRequest request, HttpServletResponse response) {
+		return "/WEB-INF/board/viewLogin.jsp";
+	}
+}

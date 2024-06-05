@@ -1,0 +1,68 @@
+<%@page import="board.User"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.sql.*" %>
+<%@ page import="java.util.*" %>
+<%@page import="board.BoardPost"%>
+<!DOCTYPE html>
+<%!
+	Connection conn = null;
+	PreparedStatement stmt = null;
+		
+	private Connection getConnection() {
+	    // 여러분의 DB 에 연결할 커넥션 객체 리턴 (구글링할것)
+	    //mariaDB 연결
+	    try {
+	    	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/test","root","1234");
+	    } catch(Exception e) {
+	    	e.printStackTrace();
+	    }
+	    return conn;
+	}
+	
+	private BoardPost newBoardPost(HttpServletRequest request) {
+		User user = (User)request.getSession().getAttribute("user");
+		System.out.println("유저아이디"+user.getId());
+		BoardPost boardPost = new BoardPost(
+				request.getParameter("subject"),
+				request.getParameter("content"),
+				user
+				);
+		return boardPost;
+	}
+	
+	private BoardPost createBoardPost(BoardPost boardPost) {
+		
+		try {
+			conn = getConnection();
+			String query = "INSERT INTO BOARDPOST (subject, content, creatorId, createDate) VALUES (?, ?, ?, NOW())";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, boardPost.getSubject());
+			stmt.setString(2, boardPost.getContent());
+			stmt.setLong(3, boardPost.getCreator().getId());
+			stmt.executeUpdate();
+
+			stmt = conn.prepareStatement("select * from boardPost where id = LAST_INSERT_ID()");
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()){
+				boardPost.setId(rs.getLong("id"));
+				boardPost.setSubject(rs.getString("subject"));
+				boardPost.setContent(rs.getString("content"));
+				boardPost.getCreator().setId((rs.getLong("creatorId")));
+				boardPost.setCreateDate(rs.getTimestamp("createDate"));
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return boardPost;
+	}
+	
+%>
+<%
+	User user = new User();
+	System.out.println(session.getAttribute("user"));
+	request.setCharacterEncoding("UTF-8");
+	response.setCharacterEncoding("UTF-8");
+	createBoardPost(newBoardPost(request));
+	response.sendRedirect("/124003/board/viewBoardPosts.jsp");
+	
+%>

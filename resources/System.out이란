@@ -1,0 +1,9 @@
+- 무심코 사용하는 System.out 은 클래스명.속성명 형태로 사용되어지는 것으로 보아 System 이라는
+클래스의 ststic public 속성일 겁니다. (이렇게 풀어서 보니 다르게 와 닿죠?)
+System.out 은 어떤 클래스 형인지 Java API 를 참조하여 답하십시요 -
+
+System은 Objcet 클래스를 상속 받은 클래스입니다.
+'public final class System extends Object'
+그리고 System 클래스의 필드인 out 변수는 PrintStream 타입입니다.
+또 PrintStram 클래스는 FilterOutputStream 클래스를 상속받은 클래스입니다. 
+

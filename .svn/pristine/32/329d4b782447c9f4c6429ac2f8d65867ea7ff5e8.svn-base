@@ -1,0 +1,16 @@
+CREATE TABLE `User` (
+	`id` BIGINT NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(20) NOT NULL,
+	`fullName` VARCHAR(20) NOT NULL,
+	`password` VARCHAR(20) NOT NULL,
+	`email` VARCHAR(50) NOT NULL,
+	`age` INT NOT NULL,
+	`createDate` DATE NOT NULL,
+	PRIMARY KEY (`id`)
+)
+
+INSERT INTO USER (NAME, fullName, PASSWORD, email, age, createDate) VALUE ("user1", "유저1", "1234", "www@naver.com", 20, NOW());
+INSERT INTO USER (NAME, fullName, PASSWORD, email, age, createDate) VALUE ("user2", "유저2", "1234", "www@naver.com", 20, NOW());
+INSERT INTO USER (NAME, fullName, PASSWORD, email, age, createDate) VALUE ("user3", "유저3", "1234", "www@naver.com", 20, NOW());
+INSERT INTO USER (NAME, fullName, PASSWORD, email, age, createDate) VALUE ("user4", "유저4", "1234", "www@naver.com", 20, NOW());
+INSERT INTO USER (NAME, fullName, PASSWORD, email, age, createDate) VALUE ("user5", "유저5", "1234", "www@naver.com", 20, NOW());

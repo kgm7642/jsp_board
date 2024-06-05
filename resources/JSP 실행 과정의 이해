@@ -1,0 +1,12 @@
+- 브라우저 주소창에 multiplication.jsp 를 입력후 브라우저에 구구단 테이블이 보여질때까지
+브라우저와 Tomcat 이 수행하는 작업을 순서대로 기술하십시요.
+(Ex. 브라우저는 Tomcat 에게 http Get 방식으로 요청을 보낸다...) -
+
+브라우저는 입력된 URL을 기반으로 Tomcat에게 HTTP GET 요청을 보냅니다.
+Tomcat은 요청을 수신하고, 요청을 처리하기 위해 적절한 JSP를 찾습니다.
+Tomcat은 JSP코드를 서블릿 클래스로 컴파일하고 실행합니다.
+multiplication.jsp가 실행되면 JSP 엔진은 해당 JSP 파일의 코드를 실행하여 HTML을 생성합니다.
+JSP엔진은 생성된 HTML 코드를 사용해 HTTP 응답을 생성합니다.
+Tomcat은 생성된 HTTP응답을 다시 브라우저로 전송합니다.
+브라우저는 수신된 HTML을 렌더링하여 사용자에게 보여줍니다.
+

@@ -1,0 +1,24 @@
+package collection;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class GatheringTest {
+
+	public static void main(String[] args) {
+		List<User> users = new ArrayList<User>(Arrays.asList(new User[] {
+			    new User("user1", 19),
+			    new User("user2", 19),
+			    new User("user3", 20),
+			    new User("user4", 18),
+			    new User("user5", 20)
+			}));
+		
+		Map<Integer, List<User>> ageUsersMap = new HashMap<Integer, List<User>>();
+
+		for (User user : users) {
+		    // 이 부분을 채워넣으세요.
+		}
+	}
+}

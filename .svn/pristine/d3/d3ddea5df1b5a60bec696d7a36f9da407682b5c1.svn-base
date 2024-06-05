@@ -1,0 +1,149 @@
+package board;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+public class MariaBoardService {
+	
+	// 게시글 상세보기 로직
+	public BoardPost getViewBoardPost(Long id) {
+		BoardPost boardPost = new BoardPost();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		
+		try {
+			conn = getConnection();
+			stmt = conn.prepareStatement("select a.id, a.subject, a.content, b.id AS creatorId, b.name AS creatorName, b.fullName AS creatorFullName, a.createDate from boardpost a LEFT OUTER JOIN USER b ON a.creatorId = b.id WHERE a.id = " + id);
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()){
+				User user = new User();
+				boardPost.setId(rs.getLong("id"));
+				boardPost.setSubject(rs.getString("subject"));
+				boardPost.setContent(rs.getString("content"));
+				boardPost.setCreator(user);
+				boardPost.getCreator().setId(rs.getLong("creatorId"));
+				boardPost.getCreator().setName(rs.getString("creatorName"));
+				boardPost.getCreator().setFullName(rs.getString("creatorFullName"));
+				boardPost.setCreateDate(rs.getTimestamp("createDate"));
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return boardPost;
+	}
+	
+	// 게시글 목록보기 로직(검색 키워드x)
+	public List<BoardPost> getViewBoardPosts() {
+		List<BoardPost> boardPosts = new ArrayList<BoardPost>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		
+		try {
+			conn = getConnection();
+			stmt = conn.prepareStatement("select a.id, a.subject, a.content, b.id AS creatorId, b.name AS creatorName, b.fullName AS creatorFullName, a.createDate from boardpost a LEFT OUTER JOIN USER b ON a.creatorId = b.id ORDER BY a.id DESC");
+			// 쿼리 실행
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next()){
+				User user = new User();
+				BoardPost boardPost = new BoardPost();
+				boardPost.setId(rs.getLong("id"));
+				boardPost.setSubject(rs.getString("subject"));
+				boardPost.setContent(rs.getString("content"));
+				boardPost.setCreator(user);
+				boardPost.getCreator().setId(rs.getLong("creatorId"));
+				boardPost.getCreator().setName(rs.getString("creatorName"));
+				boardPost.getCreator().setFullName(rs.getString("creatorFullName"));
+				boardPost.setCreateDate(rs.getTimestamp("createDate"));
+				boardPosts.add(boardPost);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return boardPosts;
+	}
+	
+	// 게시글 목록보기 로직(검색 키워드o)
+	public List<BoardPost> getViewBoardPostsWithKey(String keyWord) {
+		List<BoardPost> boardPosts = new ArrayList<BoardPost>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		
+		try {
+			conn = getConnection();
+			stmt = conn.prepareStatement("select a.id, a.subject, a.content, b.id AS creatorId, b.name AS creatorName, b.fullName AS creatorFullName, a.createDate from boardpost a LEFT OUTER JOIN USER b ON a.creatorId = b.id WHERE content LIKE '%" + keyWord + "%' ORDER BY a.id DESC");
+			// 쿼리 실행
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next()){
+				User user = new User();
+				BoardPost boardPost = new BoardPost();
+				boardPost.setId(rs.getLong("id"));
+				boardPost.setSubject(rs.getString("subject"));
+				boardPost.setContent(rs.getString("content"));
+				boardPost.setCreator(user);
+				boardPost.getCreator().setId(rs.getLong("creatorId"));
+				boardPost.getCreator().setName(rs.getString("creatorName"));
+				boardPost.getCreator().setFullName(rs.getString("creatorFullName"));
+				boardPost.setCreateDate(rs.getTimestamp("createDate"));
+				boardPosts.add(boardPost);
+			}
+			System.out.println(boardPosts);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return boardPosts;
+	}
+	
+	// 게시글 생성하기 로직
+	public BoardPost createBoardPost(BoardPost boardPost) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+
+		try {
+			conn = getConnection();
+			String query = "INSERT INTO BOARDPOST (subject, content, creatorId, createDate) VALUES (?, ?, ?, NOW())";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, boardPost.getSubject());
+			stmt.setString(2, boardPost.getContent());
+			stmt.setLong(3, boardPost.getCreator().getId());
+			stmt.executeUpdate();
+
+			stmt = conn.prepareStatement("select * from boardPost where id = LAST_INSERT_ID()");
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()){
+				boardPost.setId(rs.getLong("id"));
+				boardPost.setSubject(rs.getString("subject"));
+				boardPost.setContent(rs.getString("content"));
+				boardPost.getCreator().setId((rs.getLong("creatorId")));
+				boardPost.setCreateDate(rs.getTimestamp("createDate"));
+			}
+			
+			System.out.println("----------------------");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}	
+		
+		return boardPost;
+	}
+		
+	private Connection getConnection() {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		
+	    //mariaDB 연결
+	    try {
+	    	Class.forName("org.mariadb.jdbc.Driver");
+	    	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/test","root","1234");	
+	    } catch(Exception e) {
+	    	e.printStackTrace();
+	    }
+	    return conn;
+	}
+}

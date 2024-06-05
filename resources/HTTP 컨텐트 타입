@@ -1,0 +1,12 @@
+- HTTP 응답 컨텐트타입엔 어떤 종류가 있는지 자주 사용될만한것 10개만 기술하십시요. -
+
+Content-Type:text/plain(일반 텍스트)
+Content-Type:text/html(HTML 문서)
+Content-Type:text/css(CSS 스타일시트)
+Content-Type:text/javascript(JS 코드)
+Content-Type:image/png(PNG 이미지)
+Content-Type:image/gif(GIF 이미지)
+Content-Type:Multipart/related
+Content-Type:application/json(JSON 데이터)
+Content-Type:application/xml(XML 데이터)
+Content-Type:application/pdf(PDF 문서)

@@ -1,0 +1,91 @@
+package board;
+
+import java.io.IOException;
+import java.lang.reflect.Method;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class BoardServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
+	// Class 객체 찾기
+	private Class<BoardController> boardController = BoardController.class;
+	// Method 찾기
+	private Method method;
+	
+    public BoardServlet() {
+        super();
+    }
+    
+	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		String requestURI = req.getRequestURI();
+		String contextPath = req.getContextPath();
+		String forwardUrl = requestURI.substring(contextPath.length()+"/BoardServlet".length());
+		
+		// 리플렉션 메소드 생성시 2개의 인자값을 받기 위해 크기가 2인 배열 생성
+		Class partypes[] = new Class[2];
+		// 배열에 값을 추가함
+		partypes[0] = HttpServletRequest.class;
+		partypes[1] = HttpServletResponse.class;
+		// 리플렉션 메소드를 실행할 때 req, res 인자값 2개를 넘겨주기 위해 크기가 2인 배열 생성 
+		Object[] arguments = {req, res};		
+		
+		try {			
+			if(req.getSession().getAttribute("user") == null) {
+				if(forwardUrl.equals("/login")) {
+					method = boardController.getDeclaredMethod("login", partypes);
+					method.invoke(new BoardController(), arguments);
+				} else {
+					method = boardController.getDeclaredMethod("viewLogin", partypes);
+					RequestDispatcher rd = req.getRequestDispatcher((String) method.invoke(new BoardController(), arguments));
+					rd.forward(req, res);
+				}
+			} else {
+				// baord 파라미터를 이용해 board 객체를 request에 세팅
+				method = boardController.getDeclaredMethod("getBoard", partypes);
+				req.setAttribute("board", (Board) method.invoke(new BoardController(), arguments));
+				
+				method = boardController.getDeclaredMethod((String) forwardUrl.substring(1, forwardUrl.length()), partypes);
+				if(forwardUrl.substring(0, 5).equals("/view")) {
+					String path = (String) method.invoke(new BoardController(), arguments);
+					RequestDispatcher rd = req.getRequestDispatcher(path);
+					rd.forward(req, res);
+				} else {
+					method.invoke(new BoardController(), arguments);
+				}
+			}
+		} catch(Exception e) {
+			System.out.println(e);
+		}
+		
+//		
+//		try {			
+//			method = boardController.getDeclaredMethod((String) forwardUrl.substring(1, forwardUrl.length()), partypes);
+//			if(req.getSession().getAttribute("user")==null) {
+//				method = boardController.getDeclaredMethod("login", partypes);
+//				method.invoke(new BoardController(), arguments);
+//			}
+//			if(forwardUrl.substring(0, 5).equals("/view")) {
+//				String path = (String) method.invoke(new BoardController(), arguments);
+//				RequestDispatcher rd = req.getRequestDispatcher(path);
+//				rd.forward(req, res);
+//			} else {
+//				method.invoke(new BoardController(), arguments);
+//			}
+//		} catch(Exception e) {
+//			e.printStackTrace();
+//		}
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		doGet(req, res);
+	}
+}

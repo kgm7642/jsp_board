@@ -1,0 +1,65 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<%@ page import="java.sql.*" %>
+<%@ page import="java.util.*" %>
+<%@page import="board.User"%>
+<%!
+	Connection conn = null;
+	PreparedStatement stmt = null;
+	
+	private Connection getConnection() {
+		// 여러분의 DB 에 연결할 커넥션 객체 리턴 (구글링할것)
+	    //mariaDB 연결
+	    try {
+	    	conn = DriverManager.getConnection("jdbc:mariadb://127.0.0.1:3306/test","root","1234");	
+	    } catch(Exception e) {
+	    	e.printStackTrace();
+	    }
+	    return conn;
+	}
+	
+	private User getUser(String name, String password) {
+		User user = new User();
+		System.out.println("name : " + name);
+		System.out.println("password : " + password);
+		
+		try {
+			conn = getConnection();
+			stmt = conn.prepareStatement("select * from user where name = '" + name + "' and password = '" + password + "'");
+			ResultSet rs = stmt.executeQuery();
+			
+			// 로그인 성공
+			if(rs.next()){
+				System.out.println("로그인 성공 확인");
+				user.setId(rs.getLong("id"));
+				user.setName(rs.getString("name"));
+				user.setFullName(rs.getString("fullName"));
+				user.setEmail(rs.getString("email"));
+				user.setAge(rs.getInt("age"));
+				
+				return user;
+			// 로그인 실패
+			} else {
+				System.out.println("로그인 실패 확인");
+				return null;
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}	
+		return null;
+	}
+	
+%>
+<%
+
+	Class.forName("org.mariadb.jdbc.Driver");
+	// user의 값이 없다면(로그인 실패)
+	User user = getUser(request.getParameter("name"), request.getParameter("password"));
+	System.out.println("user: " + user);
+	if(user==null) {
+		response.sendRedirect("/124003/board/viewLogin.jsp");
+	} else {
+		session.setAttribute("user", user);
+		response.sendRedirect("/124003/board/viewBoardPosts.jsp");
+	}
+%>

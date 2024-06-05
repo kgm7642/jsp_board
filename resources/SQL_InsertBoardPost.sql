@@ -1,0 +1,10 @@
+INSERT INTO boardpost (SUBJECT, content, creatorFullName, createDate) VALUE ("제목1 ", "내용1", "유저1", NOW() );
+INSERT INTO boardpost (SUBJECT, content, creatorFullName, createDate) VALUE ("제목2 ", "내용2", "유저2", NOW() );
+INSERT INTO boardpost (SUBJECT, content, creatorFullName, createDate) VALUE ("제목3 ", "내용3", "유저3", NOW() );
+INSERT INTO boardpost (SUBJECT, content, creatorFullName, createDate) VALUE ("제목4 ", "내용4", "유저4", NOW() );
+INSERT INTO boardpost (SUBJECT, content, creatorFullName, createDate) VALUE ("제목5", "내용5", "유저5", NOW() );
+INSERT INTO boardpost (SUBJECT, content, creatorFullName, createDate) VALUE ("제목6 ", "내용6", "유저6", NOW() );
+INSERT INTO boardpost (SUBJECT, content, creatorFullName, createDate) VALUE ("제목7 ", "내용7", "유저7", NOW() );
+INSERT INTO boardpost (SUBJECT, content, creatorFullName, createDate) VALUE ("제목8 ", "내용8", "유저8", NOW() );
+INSERT INTO boardpost (SUBJECT, content, creatorFullName, createDate) VALUE ("제목9 ", "내용9", "유저9", NOW() );
+INSERT INTO boardpost (SUBJECT, content, creatorFullName, createDate) VALUE ("제목10 ", "내용10", "유저10", NOW() );

@@ -1,0 +1,35 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+	<form name="mainForm" method="post" action="/124003/BoardServlet/login">
+		<input type="text" name="name">
+		<input type="password" name="password">
+		<br>
+		<input type="button" value="로그인" onclick="login();">
+	</form>
+</body>
+<script>
+	
+let mainForm = document.getElementsByName("mainForm")[0];
+let name = document.getElementsByName("name")[0];
+let password = document.getElementsByName("password")[0];
+
+function login() {
+	if(!name.value) {
+		alert("아이디를 입력하세요.");
+		return false;
+	} else if(!password.value) {
+		alert("비밀번호를 입력하세요.")
+		return false;
+	}
+	
+	document.mainForm.submit();
+}
+</script>
+</html>
