@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
-  <display-name>moimproject</display-name>
+  <display-name>innofactory</display-name>
+
+<!-- ================================ 곱셈 실습 관련 ================================ -->
+
   <servlet>
   	<servlet-name>MultiplicationServlet</servlet-name>
   	<servlet-class>multiplication.MultiplicationServlet</servlet-class>
@@ -19,15 +22,44 @@
   	<url-pattern>/MultiplicationServletV2</url-pattern>
   </servlet-mapping>
  
-   <servlet>
-  	<servlet-name>BoardServlet</servlet-name>
+<!-- ================================ 유저 관련 ================================ -->
+ 
+  <servlet>
+  	<servlet-name>BoardServlet/viewJoin</servlet-name>
   	<servlet-class>board.BoardServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>BoardServlet</servlet-name>
-  	<url-pattern>/BoardServlet</url-pattern>
+  	<servlet-name>BoardServlet/viewJoin</servlet-name>
+  	<url-pattern>/BoardServlet/viewJoin</url-pattern>
   </servlet-mapping>
   
+  <servlet>
+  	<servlet-name>BoardServlet/join</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/join</servlet-name>
+  	<url-pattern>/BoardServlet/join</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+  	<servlet-name>BoardServlet/checkName</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/checkName</servlet-name>
+  	<url-pattern>/BoardServlet/checkName</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>BoardServlet/viewLogin</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/viewLogin</servlet-name>
+  	<url-pattern>/BoardServlet/viewLogin</url-pattern>
+  </servlet-mapping>
+ 
   <servlet>
   	<servlet-name>BoardServlet/login</servlet-name>
   	<servlet-class>board.BoardServlet</servlet-class>
@@ -36,14 +68,43 @@
   	<servlet-name>BoardServlet/login</servlet-name>
   	<url-pattern>/BoardServlet/login</url-pattern>
   </servlet-mapping>
-
+  
   <servlet>
-  	<servlet-name>BoardServlet/viewLogin</servlet-name>
+  	<servlet-name>BoardServlet/viewUpdateInfo</servlet-name>
   	<servlet-class>board.BoardServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>BoardServlet/viewLogin</servlet-name>
-  	<url-pattern>/BoardServlet/viewLogin</url-pattern>
+  	<servlet-name>BoardServlet/viewUpdateInfo</servlet-name>
+  	<url-pattern>/BoardServlet/viewUpdateInfo</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>BoardServlet/updateInfo</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/updateInfo</servlet-name>
+  	<url-pattern>/BoardServlet/updateInfo</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>BoardServlet/logout</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/logout</servlet-name>
+  	<url-pattern>/BoardServlet/logout</url-pattern>
+  </servlet-mapping>
+ 
+ <!-- ================================ 보드 관련 ================================ -->
+
+  <servlet>
+  	<servlet-name>BoardServlet/viewCreateBoardPost</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/viewCreateBoardPost</servlet-name>
+  	<url-pattern>/BoardServlet/viewCreateBoardPost</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -74,12 +135,69 @@
   </servlet-mapping>
   
   <servlet>
-  	<servlet-name>BoardServlet/viewCreateBoardPost</servlet-name>
+  	<servlet-name>BoardServlet/deleteBoardPost</servlet-name>
   	<servlet-class>board.BoardServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>BoardServlet/viewCreateBoardPost</servlet-name>
-  	<url-pattern>/BoardServlet/viewCreateBoardPost</url-pattern>
+  	<servlet-name>BoardServlet/deleteBoardPost</servlet-name>
+  	<url-pattern>/BoardServlet/deleteBoardPost</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>BoardServlet/viewUpdateBoardPost</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/viewUpdateBoardPost</servlet-name>
+  	<url-pattern>/BoardServlet/viewUpdateBoardPost</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>BoardServlet/updateBoardPost</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/updateBoardPost</servlet-name>
+  	<url-pattern>/BoardServlet/updateBoardPost</url-pattern>
+  </servlet-mapping>
+  
+<!-- ================================ 댓글 관련 ================================ -->
+
+  <servlet>
+  	<servlet-name>BoardServlet/getComment</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/getComment</servlet-name>
+  	<url-pattern>/BoardServlet/getComment</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+  	<servlet-name>BoardServlet/createComment</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/createComment</servlet-name>
+  	<url-pattern>/BoardServlet/createComment</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>BoardServlet/deleteComment</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/deleteComment</servlet-name>
+  	<url-pattern>/BoardServlet/deleteComment</url-pattern>
+  </servlet-mapping>
+<!-- ================================ 초기 페이지 매핑 ================================ -->
+  
+  <servlet>
+  	<servlet-name>BoardServlet</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet</servlet-name>
+  	<url-pattern>/BoardServlet</url-pattern>
   </servlet-mapping>
   
   <welcome-file-list>

@@ -1,0 +1,7 @@
+CREATE TABLE `BoardAdminLink` (
+	`id` BIGINT NOT NULL AUTO_INCREMENT,
+	`boardId` BIGINT NOT NULL,
+	`adminId` BIGINT NOT NULL,
+	`createDate` DATE NOT NULL,
+	PRIMARY KEY (`id`)
+);

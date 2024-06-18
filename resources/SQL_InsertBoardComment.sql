@@ -1,0 +1,1 @@
+INSERT INTO boardcomment (COMMENT, userId, postId, createDate) VALUES ("테스트 댓글", 15, 244, NOW());

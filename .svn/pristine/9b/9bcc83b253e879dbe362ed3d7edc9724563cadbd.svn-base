@@ -1,0 +1,88 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="board.User"%>
+<%@page import="board.BoardPost"%>
+<!DOCTYPE html>
+<%
+	String boardId = request.getParameter("boardId");
+	BoardPost boardPost = (BoardPost) request.getAttribute("boardPost");
+	Boolean deletable = (Boolean) request.getAttribute("deletable");
+	Boolean updatable = (Boolean) request.getAttribute("updatable");
+%>
+<jsp:include page="viewHeader.jsp"></jsp:include>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>게시글 상세보기</title>
+</head>
+<style>
+	.postDiv {
+		text-align: center;
+	}
+
+	table {
+		border: 1px solid black;
+		margin-top: 10px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
+	input[value="삭제"] {
+		margin: 10px;
+	}
+</style>
+<body>
+	<div class="postDiv">
+		<form name="mainForm" method="POST" action="/124003/BoardServlet/deleteBoardPost">
+			<input type="hidden" name="boardPostId" value="<%=boardPost.getId()%>">
+			<input type="hidden" name="boardId" value="<%=boardId%>"/>
+		</form>
+		<table border="1">
+			<tr bgcolor="gray">
+				<th>게시글번호</th>
+				<th>제목</th>
+				<th>내용</th>
+				<th>작성자 아이디</th>
+				<th>작성자 이름</th>
+				<th>작성일</th>
+			</tr>
+			<tr>
+				<td>${boardPost.getId()}</td>
+				<td>${boardPost.getSubject()}</td>
+				<td>${boardPost.getContent()}</td>
+				<td>${boardPost.getCreator().getName()}</td>
+				<td>${boardPost.getCreator().getFullName()}</td>
+				<td>${boardPost.getCreateDate()}</td>
+			</tr>
+		</table>
+		<%
+			if(deletable) {
+		%>		
+				<input type="button" value="삭제" onclick="deleteBoardPost();">
+		<%	
+			}
+		%>
+		<%
+			if(updatable) {
+		%>
+				<input type="button" value="수정" onclick="updateBoardPost();">
+		<%
+			}
+		%>
+	</div>
+</body>
+<script>
+	let mainForm = document.getElementsByName("mainForm")[0]
+	
+	function deleteBoardPost() {
+		if(confirm("삭제하시겠습니까??")) {
+			document.mainForm.submit();
+		} else {
+			return false;
+		}
+	}
+	
+	function updateBoardPost() {
+		document.location.href = "/124003/BoardServlet/viewUpdateBoardPost?boardId=<%=boardId%>&boardPostId=<%=boardPost.getId()%>";
+	}
+</script>
+</html>

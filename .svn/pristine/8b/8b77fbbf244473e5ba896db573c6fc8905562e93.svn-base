@@ -1,0 +1,150 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="board.Board"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="board.BoardPost"%>
+<!DOCTYPE html>
+<% 
+	List<BoardPost> boardPosts = new ArrayList<BoardPost>();
+	boardPosts = (ArrayList<BoardPost>) request.getAttribute("boardPosts");
+	Board board = (Board) request.getAttribute("board");
+%>
+<jsp:include page="viewHeader.jsp"></jsp:include>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>게시글 리스트</title>
+</head>
+<script>
+	<%
+		if(request.getAttribute("BC")!=null) {
+	%>
+			alert("게시글 작성완료!");
+	<%
+		}
+	%>
+	<%
+		if(request.getAttribute("BD")!=null) {
+	%>
+			alert("게시글 삭제완료!");
+	<%
+		}
+	%>
+	<%
+		if(request.getAttribute("BU")!=null) {
+	%>
+			alert("게시글 수정완료!");
+	<%
+		}
+	%>
+</script>
+<style>
+	.postsDiv {
+		text-align: center;
+	}
+
+	table {
+		margin-top: 10px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	
+	a {
+		font-weight: bold;
+		text-decoration-line: none;
+		color: black;	
+	}
+	
+	.pageNum {
+		font-weight: bold;
+		text-decoration-line: none;
+		color: black;
+	}
+	
+	#select {
+		color: #FF82FF;
+	}
+</style>
+<body onkeypress = "enterkey();">
+	<div class="postsDiv">
+		<h1><% out.print(board.getTitle()); %></h1>
+		<br>
+		<a href="/124003/BoardServlet/viewCreateBoardPost?boardId=<%=board.getId()%>">게시물 작성</a>
+	    <form name="mainForm" method="post">
+	    <input type="text" name="subject">
+	    <input type="button" onclick="searchBoardPosts()" value="검색">
+		<table border="1">
+			<tr bgcolor="green">
+				<th>ID</th>
+				<th>제목</th>
+				<th>작성자 ID</th>
+				<th>작성자 아이디</th>
+				<th>작성자 이름</th>
+				<th>작성일</th>
+			</tr>
+			<%
+				for(int i=0; i<boardPosts.size(); i++) {
+			%>
+				
+			<tr>
+				<td><% out.print(boardPosts.get(i).getId()); %></td>
+				<td><a href="/124003/BoardServlet/viewBoardPost?boardPostId=<%=boardPosts.get(i).getId()%>&boardId=<%=board.getId()%>"><% out.print(boardPosts.get(i).getSubject()); %></a></td>
+				<td><% out.print(boardPosts.get(i).getCreator().getId()); %></td>
+				<td><% out.print(boardPosts.get(i).getCreator().getName()); %></td>
+				<td><% out.print(boardPosts.get(i).getCreator().getFullName()); %></td>
+				<td><% out.print(boardPosts.get(i).getCreateDate()); %></td>
+			</tr>	
+								
+			<%		
+				}
+			%>
+			</table>
+			<table>
+				<!-- 페이징 처리 부분 -->
+				<td colspan="4">
+					<p align="center"><b><span style='font-size=9pt;'>
+						<c:if test="${page.prev}">
+							<a href="/124003/BoardServlet/viewBoardPosts?page=${page.startPage -1}&boardId=${board.getId()}">이전 페이지</a>
+						</c:if>&nbsp;
+						<c:forEach var="num" begin="${page.startPage}" end="${page.endPage}">
+							<c:choose>
+								<c:when test="${num == page.getPageVO().getPage()}">
+									<b class="pageNum" id="select">${num}</b>&nbsp;	
+								</c:when>
+								<c:otherwise>
+									<a class="pageNum" href="/124003/BoardServlet/viewBoardPosts?page=${num}&boardId=${board.getId()}">${num}</a>&nbsp;	
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<c:if test="${page.next}">
+							<a href="/124003/BoardServlet/viewBoardPosts?page=${page.endPage + 1}&boardId=${board.getId()}">다음 페이지</a>
+						</c:if>
+						</span></b>
+					</p>
+				</td>
+				<!--End Paging -->
+			</table>
+	    </form>
+    </div>
+</body>
+<script>
+let subject = document.getElementsByName("subject")[0]
+let mainForm = document.getElementsByName("mainForm")[0]
+
+//엔터키로 검색 처리
+function enterkey() {
+	if(window.event.keyCode==13) {
+		searchBoardPosts();
+	}
+}
+
+function searchBoardPosts() {
+	if(!subject.value) {
+		alert("검색어를 입력하십시요");
+		return false;
+	}
+	document.mainForm.submit();
+}
+</script>
+</html>

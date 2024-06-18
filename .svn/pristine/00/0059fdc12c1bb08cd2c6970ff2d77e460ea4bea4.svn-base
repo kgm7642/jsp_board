@@ -1,0 +1,86 @@
+package board;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+public class MariaUserService extends ServiceManager implements UserService {
+	
+	
+	// 회원가입 
+	@Override
+	public User join(User user) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		
+		try {
+			conn = getConnection();
+			String query = "INSERT INTO USER (name, fullName, password, email, age, createDate) VALUES (?, ?, ?, ?, ?, NOW())";
+			stmt = conn.prepareStatement(query);
+			stmt.setString(1, user.getName());
+			stmt.setString(2, user.getFullName());
+			stmt.setString(3, user.getPassword());
+			stmt.setString(4, user.getEmail());
+			stmt.setLong(5, user.getAge());
+			stmt.executeUpdate();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+	
+	// 아이디 중복체크
+	@Override
+	public Boolean checkName(String name) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		
+		try {
+			conn = getConnection();
+			stmt = conn.prepareStatement("select * from user where name = ?");
+			stmt.setString(1, name);
+			
+			ResultSet rs = stmt.executeQuery();
+			return rs.next();	
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	// ID, PW를 통해 DB에 값이 있는지 확인후 존재하면 User 리턴
+	@Override
+	public User getUser(User user) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		
+		try {
+			conn = getConnection();
+			stmt = conn.prepareStatement("select * from user where name = ? and password = ?");
+			stmt.setString(1, user.getName());
+			stmt.setString(2, user.getPassword());
+			
+			ResultSet rs = stmt.executeQuery();
+			
+			// 로그인 성공
+			if(rs.next()){
+				System.out.println("로그인 성공 확인");
+				user.setId(rs.getLong("id"));
+				user.setName(rs.getString("name"));
+				user.setFullName(rs.getString("fullName"));
+				user.setEmail(rs.getString("email"));
+				user.setAge(rs.getInt("age"));
+				
+				return user;
+			// 로그인 실패
+			} else {
+				System.out.println("로그인 실패 확인");
+				return null;
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+}

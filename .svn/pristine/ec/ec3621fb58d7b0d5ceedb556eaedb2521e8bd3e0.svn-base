@@ -1,0 +1,69 @@
+<%@page import="board.Board"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<!DOCTYPE html>
+<% 
+	
+	List<Board> boards = new ArrayList<Board>();
+	boards = (ArrayList<Board>) request.getAttribute("boardList");
+	Board board = (Board) request.getAttribute("board");
+%>
+<html>
+<head>
+<meta charset="EUC-KR">
+<style>
+	.headerDiv {
+		text-align: center;
+		font-size: 50px;
+	}
+	
+	.headerA {
+		width: 300px;
+		height: 50px; 
+		color: black;
+		text-decoration-line: none;
+	}
+	
+	#logout {
+		width: 100px;
+		height: 50px;
+		border: 2px solid black;
+		border-radius: 2px;
+		text-decoration-line: none;
+		font-size: 15px;
+		background: gray;
+  		font-weight: bold;
+		color: black;
+	}
+</style>
+<title>헤더</title>
+</head>
+<body>
+	<div class="headerDiv">
+		<%
+			for(int i=0; i<boards.size(); i++) {
+		%>
+				<%
+					if(boards.get(i).getId() == board.getId()) {
+				%>
+						<a class="headerA" href="/124003/BoardServlet/viewBoardPosts?boardId=<%=boards.get(i).getId()%>"><b><% out.print(boards.get(i).getTitle()); %></b></a>
+				<%	
+					} else {
+				%>
+						<a class="headerA" href="/124003/BoardServlet/viewBoardPosts?boardId=<%=boards.get(i).getId()%>"><% out.print(boards.get(i).getTitle()); %></a>
+				<%
+					}
+					if(i!=boards.size()-1) {
+						out.print("|");
+					}
+				%>
+		
+		<%
+			}
+		%>
+		<div><a href="/124003/BoardServlet/logout" id="logout">로그아웃</a></div>
+	</div>
+</body>
+</html>

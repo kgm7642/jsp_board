@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>moimproject</display-name>
+  <servlet>
+  	<servlet-name>MultiplicationServlet</servlet-name>
+  	<servlet-class>multiplication.MultiplicationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>MultiplicationServlet</servlet-name>
+  	<url-pattern>/MultiplicationServlet</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>MultiplicationServletV2</servlet-name>
+  	<servlet-class>multiplication.MultiplicationServletV2</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>MultiplicationServletV2</servlet-name>
+  	<url-pattern>/MultiplicationServletV2</url-pattern>
+  </servlet-mapping>
+ 
+   <servlet>
+  	<servlet-name>BoardServlet</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet</servlet-name>
+  	<url-pattern>/BoardServlet</url-pattern>
+  </servlet-mapping>
+
+
+
+
+
+  <servlet>
+  	<servlet-name>BoardServlet/viewJoin</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/viewJoin</servlet-name>
+  	<url-pattern>/BoardServlet/viewJoin</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>BoardServlet/join</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/join</servlet-name>
+  	<url-pattern>/BoardServlet/join</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>BoardServlet/checkName</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/checkName</servlet-name>
+  	<url-pattern>/BoardServlet/checkName</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  <servlet>
+  	<servlet-name>BoardServlet/login</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/login</servlet-name>
+  	<url-pattern>/BoardServlet/login</url-pattern>
+  </servlet-mapping>
+  
+    <servlet>
+  	<servlet-name>BoardServlet/logout</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/logout</servlet-name>
+  	<url-pattern>/BoardServlet/logout</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+  	<servlet-name>BoardServlet/viewLogin</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/viewLogin</servlet-name>
+  	<url-pattern>/BoardServlet/viewLogin</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+  	<servlet-name>BoardServlet/createBoardPost</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/createBoardPost</servlet-name>
+  	<url-pattern>/BoardServlet/createBoardPost</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>BoardServlet/viewBoardPost</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/viewBoardPost</servlet-name>
+  	<url-pattern>/BoardServlet/viewBoardPost</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>BoardServlet/viewBoardPosts</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/viewBoardPosts</servlet-name>
+  	<url-pattern>/BoardServlet/viewBoardPosts</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>BoardServlet/viewCreateBoardPost</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/viewCreateBoardPost</servlet-name>
+  	<url-pattern>/BoardServlet/viewCreateBoardPost</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+  	<servlet-name>BoardServlet/deleteBoardPost</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/deleteBoardPost</servlet-name>
+  	<url-pattern>/BoardServlet/deleteBoardPost</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+  	<servlet-name>BoardServlet/updateBoardPost</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/updateBoardPost</servlet-name>
+  	<url-pattern>/BoardServlet/updateBoardPost</url-pattern>
+  </servlet-mapping>
+  
+    <servlet>
+  	<servlet-name>BoardServlet/viewUpdateBoardPost</servlet-name>
+  	<servlet-class>board.BoardServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>BoardServlet/viewUpdateBoardPost</servlet-name>
+  	<url-pattern>/BoardServlet/viewUpdateBoardPost</url-pattern>
+  </servlet-mapping>
+  
+  <welcome-file-list>
+    <welcome-file>/index.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>

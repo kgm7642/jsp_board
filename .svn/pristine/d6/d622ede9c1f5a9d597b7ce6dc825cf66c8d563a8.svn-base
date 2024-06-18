@@ -1,0 +1,9 @@
+package board;
+
+public interface UserService {
+
+	User join(User user);
+	Boolean checkName(String name);
+	User getUser(User user);
+	User updateInfo(User user);
+}

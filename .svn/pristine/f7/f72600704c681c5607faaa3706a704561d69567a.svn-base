@@ -1,0 +1,99 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>로그인</title>
+</head>
+<style>
+	#loginDiv {
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 700px;
+	}
+
+	input[type="text"],
+	input[type="password"] {
+		border-radius: 4px;
+		margin: 1.5px;
+		width: 250px;
+		height: 40px;
+	}
+	
+	input {
+		font-weight: bold;
+	}
+	
+ 	input[type="button"] {
+		margin: 3px;
+		width: 160px;
+		height: 40px;
+	}
+	
+	table {
+		border: 1px solid black;
+		vertical-align: middle;
+		margin-left: auto;
+		margin-right: auto;
+	}
+</style>
+<script>
+	<% 
+		if(request.getParameter("loginFail")!=null) {
+	%>
+			alert("아이디, 비밀번호를 다시 확인하세요.");
+	<%
+		}
+	%>
+</script>
+<body onkeypress = "enterkey();">
+	<div id="loginDiv">
+		<form name="mainForm" method="post" action="/124003/BoardServlet/login">
+			<table>
+				<tr>
+					<th><input type="text" name="name" tabindex="1"></th>
+					<td><input type="button" value="로그인" onclick="login();"></td>
+				</tr>
+				<tr>
+					<th><input type="password" name="password" tabindex="2"></th>
+					<td><input type="button" value="회원가입" onclick="join();"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</body>
+<script>
+	
+let mainForm = document.getElementsByName("mainForm")[0];
+let name = document.getElementsByName("name")[0];
+let password = document.getElementsByName("password")[0];
+
+// 엔터키로 로그인 처리
+function enterkey() {
+	if(window.event.keyCode==13) {
+		login();
+	}
+}
+
+// 로그인 
+function login() {
+	if(!name.value) {
+		alert("아이디를 입력하세요.");
+		return false;
+	} else if(!password.value) {
+		alert("비밀번호를 입력하세요.")
+		return false;
+	}
+	
+	document.mainForm.submit();
+}
+
+// 회원가입 페이지 이동
+function join() {
+	document.location.href = '/124003/BoardServlet/viewJoin';
+}
+
+</script>
+</html>

@@ -1,0 +1,2 @@
+INSERT INTO boardadminlink (boardId, adminId, createDate) VALUES (6, 1, NOW());
+INSERT INTO boardadminlink (boardId, adminId, createDate) VALUES (7, 2, NOW());
